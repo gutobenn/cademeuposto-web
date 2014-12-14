@@ -20,7 +20,7 @@ my $dbh = DBI->connect(
 ) or croak $DBI::errstr;
 
 my $rua = param('rua') || "Nome da rua";
-#my $numero = param('numero') || "Número da casa";
+my $numero = param('numero') || "Número da casa";
 
 my ${select_stmt} = "SELECT * FROM postos WHERE NOME_DA_RUA LIKE \"${rua}\" ORDER BY INICIAL COLLATE NOCASE;";
 my ${sth} = ${dbh}->prepare(${select_stmt}) or croak $DBI::errstr;
@@ -52,6 +52,7 @@ Content-Type: text/html; charset=utf-8
 <link href="./bootstrap/css/jumbotron.css" rel="stylesheet">
 <link href="./bootstrap/css/grid.css" rel="stylesheet">
 <link href="./estilos.css" rel="stylesheet">
+<link href="./select2.css" rel="stylesheet"/>
 
 <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
@@ -94,14 +95,16 @@ Content-Type: text/html; charset=utf-8
 		<center>
 		<form class="navbar-form" role="form" action="./#resultado">
 			<div class="form-group">
-				<input type="text" name="rua" placeholder="Nome da rua" class="form-control" value="${rua}">
+                <select class="form-control" id="inputrua">
+                    <option>TODO: inserir cidades</option>
+                </select>
 			</div>
-<!--
-			<div class="form-group">
-				<input type="text" placeholder="Número" class="form-control">
+			
+            <div class="form-group">
+				<input type="number" placeholder="Número" class="form-control">
 			</div>
--->
-			<button type="submit" class="btn btn-success">Buscar</button>
+			
+            <button type="submit" class="btn btn-success">Buscar</button>
 		</form>
 
 		</center>
@@ -182,6 +185,12 @@ print <<EOF;
 <script src="../../dist/js/bootstrap.min.js"></script>
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+<script src="./select2.js"></script>
+<script>
+    $(document).ready(function() { $("#inputrua").select2({
+        placeholder: "Nome da rua"
+    }); });
+</script>
 <!-- Google Analytics -->
 <script>
 	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
